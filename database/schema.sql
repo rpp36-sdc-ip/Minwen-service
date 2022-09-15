@@ -37,7 +37,7 @@ from
 DROP TABLE IF EXISTS reviews;
 
 CREATE TABLE reviews(
-  id int PRIMARY KEY NOT NULL,
+id serial int PRIMARY KEY NOT NULL,
   product_id int,
   rating int NOT NULL,
   date text,
