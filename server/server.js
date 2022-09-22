@@ -10,6 +10,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 app.get('/reviews', (req, res) => {
+  //console.log(req.query);
   let params = {
     page: req.query.page || 1,
     count: req.query.count || 5,
@@ -47,14 +48,14 @@ app.get('/reviews/meta', (req, res) => {
 
 app.put('/reviews/:reviewId/report', (req, res) => {
   // res.status(204).send("put report Sucessfully ");
-  //console.log(req.params, req.method);
+  //console.log(req.params.reviewId, req.method);
   let review_id = req.params.reviewId;
   model.report(review_id, (err, result) => {
     if (err) {
       res.status(500).send('Put report from database failed');
     } else {
       //console.log('from server', result);
-      res.sendStatus(204);
+      res.status(204).send('Put report successfully!');
     }
   })
 });
@@ -62,6 +63,7 @@ app.put('/reviews/:reviewId/report', (req, res) => {
 
 app.put('/reviews/:reviewId/helpful', (req, res) => {
   let review_id = req.params.reviewId;
+  //console.log(review_id);
   model.helpful(review_id, (err, result) => {
     if (err) {
       res.status(500).send('Put helpful from database failed');
@@ -74,7 +76,7 @@ app.put('/reviews/:reviewId/helpful', (req, res) => {
 
 
 app.post('/reviews', (req, res) => {
-
+  console.log(req.body);
   model.addReview(req.body, (err, result) => {
     if (err) {
       res.status(500).send('Post reviews from database failed');

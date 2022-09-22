@@ -5,8 +5,10 @@ const listReviews = (params, callback) => {
   const product_id = params.product_id;
   const reviewList = {};
   const resultObj = {};
-
-  db.getReviews(product_id, (err, result) => {
+  const sort = params.sort;
+  const count = params.count;
+  const page = params.page;
+  db.getReviews(product_id, sort, count, page, (err, result) => {
     if (err) {
       console.log("Err from getRevies");
       callback(err);
@@ -149,7 +151,7 @@ const getMetadata = function (productId, callback) {
 
 const addReview = function (insert, callback) {
   //console.log(body);
-
+  //console.log(insert);
   const product_id = insert.product_id;
   const rating = insert.rating;
   const summary = insert.summary;
@@ -163,18 +165,17 @@ const addReview = function (insert, callback) {
     characteristics[key] = insert.characteristics[key];
   }
 
+  //console.log(product_id, rating, summary, date, body, recommend, name, email, characteristics);
 
   db.postReviews(product_id, rating, summary, date, body, recommend, name, email, characteristics, (err, result) => {
     if (err) {
       console.log("Err from post reviews");
       callback(err);
     } else {
+      //console.log(result);
       callback(null, result);
-
     }
   });
-
-
 };
 
 const helpful = function (input, callback) {
