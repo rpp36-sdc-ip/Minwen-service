@@ -1,14 +1,22 @@
 const { Client } = require('pg');
 
 const client = new Client({
-  host: 'localhost',
+  //host: 'localhost',
+  host: 'ec2-3-93-58-133.compute-1.amazonaws.com',
   user: 'newuser',
+  //user: 'postgres',
   port: 5432,
   password: 'password',
   database: 'sdc_reviews'
 });
 
 client.connect();
+
+
+// client.on('error', (err, client) => {
+//   console.error('db connection err', err);
+
+// });
 
 
 const getReviews = function (value, sort, count, page, callback) {
@@ -23,13 +31,14 @@ const getReviews = function (value, sort, count, page, callback) {
     sortDesc = 'helpfulness DESC';
   }
   console.log('here', sortDesc);
+  console.log(value);
   let offset = page === 0 ? 0 : (page - 1) * count;
   let queryString = `SELECT id AS review_id, rating, summary, recommend, response, body, date, reviewer_name, helpfulness
   FROM reviews where product_id = ${value} AND reported=false ORDER BY ${sortDesc}`;
-
+  console.log(queryString);
   client.query(queryString, async (err, result) => {
     if (err) {
-      console.log('Err from performing the query string ');
+      console.log('Err from performing the query string ', err);
       callback(err);
     } else {
       const reviews = result.rows;

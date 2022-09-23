@@ -2,12 +2,14 @@ const db = require('../database/index.js');
 
 
 const listReviews = (params, callback) => {
+
   const product_id = params.product_id;
   const reviewList = {};
   const resultObj = {};
   const sort = params.sort;
   const count = params.count;
   const page = params.page;
+
   db.getReviews(product_id, sort, count, page, (err, result) => {
     if (err) {
       console.log("Err from getRevies");
@@ -46,6 +48,7 @@ const listReviews = (params, callback) => {
         callback(null, reviewList);
       }
     }
+
     if (Object.keys(result).length !== 0) {
       //console.log('result', reviewList.results[0].photos[0]);
       callback(null, reviewList);
